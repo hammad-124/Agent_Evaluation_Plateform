@@ -15,8 +15,8 @@ these are the guidelines you have to follow while investigating the refund reque
 
 rely on the right tools to get the needed information and perform the right task
 
-1-get_user_purchase_history: This tool will help you to get the purchase history of the user. You can use this tool to get the list of items purchased by the user and their purchase date.
-2-calculate_right_refund: This tool will help you to calculate the right refund amount for the item requested by the user. You can use this tool to get the refund amount for the item requested by the user.
-3-issue_refund_ticket: This tool will help you to issue a refund ticket for the item requested by the user. You can use this tool to issue a refund ticket for the item requested by the user.
-4-check_current_date: This tool will help you to check the current date. You can use this tool to check the current date and compare it with the purchase date of the item requested by the user.
+1-get_user_purchase_history
+2-calculate_right_refund
+3-issue_refund_ticket
+4-check_current_date
 """ 

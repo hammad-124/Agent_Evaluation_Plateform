@@ -8,5 +8,5 @@ class Answer(BaseModel):
                                 "if agent has made dicision to continue conversation then it should be true", default=True)
 
 class PurchaseItem(BaseModel):
-    item_name:str = Field(description="Name of the item purchased by user.")
+    name:str = Field(description="Name of the item purchased by user.")
    
