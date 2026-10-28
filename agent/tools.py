@@ -67,10 +67,10 @@ def check_current_date(user:str) -> str:
 
 # print(get_user_purchase_history.invoke("user123"))
 
-book = PurchaseItem(name="book")
-pen = PurchaseItem(name="pen")
-print(calculate_right_refund.invoke({
-    "user": "user123",
-    "items": [book, pen]})) 
-print(check_current_date.invoke("user123"))
+# book = PurchaseItem(name="book")  
+# pen = PurchaseItem(name="pen")
+# print(calculate_right_refund.invoke({
+#     "user": "user123",
+#     "items": [book, pen]})) 
+# print(check_current_date.invoke("user123"))
 # print(issue_refund_ticket.invoke("user123", 30))    
