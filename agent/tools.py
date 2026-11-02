@@ -3,9 +3,16 @@ from data import users_data
 from dotenv import load_dotenv
 import logging
 from object import PurchaseItem
-from datetime import date
+from datetime import date, timedelta
 
 
+REFUND_WINDOW_DAYS = 30
+
+
+def _parse_date(value: str) -> date:
+    """Parse a 'YYYY-M-D' purchase date (padding optional) into a date."""
+    year, month, day = (int(part) for part in value.split("-"))
+    return date(year, month, day)
 
 
 
@@ -25,22 +32,59 @@ def get_user_purchase_history(user:str) -> dict:
 
 
 @tool
-def calculate_right_refund(user:str, items:list[PurchaseItem]) -> str:
+def calculate_right_refund(user: str, items: list[PurchaseItem]) -> dict:
     """
-    this tool takes the user username and  list of item  to be returned 
-      as input and returns how much refund is worth.
+    Takes the username and the list of items the user asked to be refunded.
+    Pass every item the user requested; this tool applies the refund policy
+    (item must be in the purchase history and purchased within the last 30
+    days, not in the future) and returns the refundable amount together with
+    which items are eligible and which are rejected and why.
     """
 
-    logging.info(f"Calculating right refund  tool to get user: {user} refund")
+    logging.info(f"Calculating refund for user: {user}")
 
-    if users_data.get(user):
-        total_refund = 0
+    history = users_data.get(user)
+    if not history:
+        return {
+            "status": "user not found",
+            "refund_amount": 0,
+            "eligible_items": [],
+            "rejected_items": [],
+        }
 
-        for item in items:
-            if users_data[user].get(item.name):
-                total_refund += users_data[user][item.name]["price"]
-        return f"Total refund amount for useris: {total_refund}"
-        return {"status":"Item not found in user's purchase history"}
+    today = date.today()
+    cutoff = today - timedelta(days=REFUND_WINDOW_DAYS)
+    refund_amount = 0
+    eligible_items = []
+    rejected_items = []
+
+    for item in items:
+        record = history.get(item.name)
+        if not record:
+            rejected_items.append(
+                {"name": item.name, "reason": "not in the user's purchase history"}
+            )
+            continue
+
+        purchase_date = _parse_date(record["date"])
+        if purchase_date > today:
+            rejected_items.append(
+                {"name": item.name, "reason": "the purchase date is in the future"}
+            )
+        elif purchase_date < cutoff:
+            rejected_items.append(
+                {"name": item.name, "reason": "purchased more than 30 days ago"}
+            )
+        else:
+            refund_amount += record["price"]
+            eligible_items.append({"name": item.name, "price": record["price"]})
+
+    return {
+        "status": "ok",
+        "refund_amount": refund_amount,
+        "eligible_items": eligible_items,
+        "rejected_items": rejected_items,
+    }
 
 
 @tool
@@ -52,16 +96,6 @@ def issue_refund_ticket(user:str,refund_amount:int) -> str:
     logging.info(f"Issuing refund ticket for user : {user} of amount: {refund_amount}")
 
     return f"Your refund ticket with the amount {refund_amount} has been created and it will be processed within 5-7 business days."
-
-@tool
-def check_current_date(user:str) -> str:
-
-
-    """
-    this tool will check the current date and return it in a string format.
-    """
-    logging.info(f"Checking current date for user: {user}")
-    return date.today()
 
 
 

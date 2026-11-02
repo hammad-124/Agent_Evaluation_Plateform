@@ -3,7 +3,6 @@ from tools import (
     get_user_purchase_history,
     calculate_right_refund,
     issue_refund_ticket,
-    check_current_date
 )
 import logging
 from dotenv import load_dotenv
@@ -26,7 +25,6 @@ agent = create_agent(
         get_user_purchase_history,
         calculate_right_refund,
         issue_refund_ticket,
-        check_current_date
     ],
     system_prompt=agent_prompt,
     checkpointer=InMemorySaver(),
