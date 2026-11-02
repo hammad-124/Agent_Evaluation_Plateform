@@ -29,7 +29,7 @@ users_data = {
     "user126": {
         "backpack": {
             "price": 45,
-            "date": "2026-10-2"
+            "date": "2026-10-5"
         },
         "water_bottle": {
             "price": 18,

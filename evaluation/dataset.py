@@ -6,12 +6,12 @@ dataset = EvaluationDataset(
     goldens=[
         Golden(
             input="I am user123, I would like a refund for the book and the pen",
-            expected_output="A refund ticket for 30$ has been issued successfully",
+            expected_output="A refund ticket for 30$ has been issued successfully and will be processed within 5 to 7 business days",
             expected_tools=[
                 ToolCall(name="get_user_purchase_history",
                          input_parameters={"user":"user123"}),
-                ToolCall(name="get_today_date",
-                                         input_parameters={}),
+                ToolCall(name="check_current_date",
+                                         input_parameters={"user":"user123"}),
                 ToolCall(name="calculate_right_refund",
                          input_parameters={"user":"user123","items":[{"name":"book"},{"name":"pen"}]}),
                 ToolCall(name="issue_refund_ticket",
@@ -21,12 +21,12 @@ dataset = EvaluationDataset(
         ),
         Golden(
             input="I am user123, I would like a refund for the book",
-            expected_output="A refund ticket for 23$ has been issued successfully",
+            expected_output="A refund ticket for 23$ has been issued successfully and will be processed within 5 to 7 business days",
             expected_tools=[
                ToolCall(name="get_user_purchase_history",
                          input_parameters={"user":"user123"}),
-                ToolCall(name="get_today_date",
-                                         input_parameters={}),
+                ToolCall(name="check_current_date",
+                                         input_parameters={"user":"user123"}),
                 ToolCall(name="calculate_right_refund",
                          input_parameters={"user":"user123","items":[{"name":"book"}]}),
                 ToolCall(name="issue_refund_ticket",
@@ -56,18 +56,18 @@ dataset = EvaluationDataset(
             expected_tools=[
                ToolCall(name="get_user_purchase_history",
                          input_parameters={"user":"user126"}),
-                ToolCall(name="get_today_date",
-                         input_parameters={})
+                ToolCall(name="check_current_date",
+                         input_parameters={"user":"user126"})
             ]
         ),
         Golden(
             input="I am user126, I would like a refund for the backpack and water_bottle",
-            expected_output="A refund ticket for 45$ has been issued successfully only for the backpack. the water_bottle is not eligible for a refund because it is outside 30 days refund policy",
+            expected_output="A refund ticket for 45$ has been issued successfully only for the backpack and will be processed within 5 to 7 business days. the water_bottle is not eligible for a refund because it is outside 30 days refund policy",
             expected_tools=[
                ToolCall(name="get_user_purchase_history",
                          input_parameters={"user":"user126"}),
-                ToolCall(name="get_today_date",
-                         input_parameters={}),
+                ToolCall(name="check_current_date",
+                         input_parameters={"user":"user126"}),
                 ToolCall(name="calculate_right_refund",
                          input_parameters={"user":"user126","items":[{"name":"backpack"}]}),
                 ToolCall(name="issue_refund_ticket",
